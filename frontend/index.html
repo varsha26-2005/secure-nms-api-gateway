@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Secure NMS Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ========================================= -->
+    <!-- LOGIN PAGE -->
+    <!-- ========================================= -->
+
+    <div id="loginPage" class="page">
+
+        <div class="login-card">
+
+            <div class="logo">
+                🛡️
+            </div>
+
+            <h1>Secure NMS</h1>
+
+            <p class="subtitle">
+                Network Management System
+            </p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter username"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Login
+                </button>
+
+            </form>
+
+            <p id="loginMessage" class="message"></p>
+
+            <div class="demo-credentials">
+                <p>Demo credentials</p>
+
+                <span>admin / admin123</span>
+                <span>operator / operator123</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- DASHBOARD -->
+    <!-- ========================================= -->
+
+    <div id="dashboardPage" class="dashboard hidden">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    🛡️
+                </div>
+
+                <div>
+                    <h2>Secure NMS</h2>
+                    <span>Network Management</span>
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <nav>
+
+                <button
+                    id="dashboardNav"
+                    class="nav-item active"
+                    type="button"
+                >
+                    📊
+                    <span>Dashboard</span>
+                </button>
+
+
+                <button
+                    id="devicesNav"
+                    class="nav-item"
+                    type="button"
+                >
+                    🖥️
+                    <span>Devices</span>
+                </button>
+
+
+                <button
+                    id="alarmsNav"
+                    class="nav-item"
+                    type="button"
+                >
+                    🚨
+                    <span>Alarms</span>
+                </button>
+
+
+                <button
+                    id="networkNav"
+                    class="nav-item"
+                    type="button"
+                >
+                    🌐
+                    <span>Network Status</span>
+                </button>
+
+            </nav>
+
+
+            <!-- SIDEBAR BOTTOM -->
+
+            <div class="sidebar-bottom">
+
+                <div class="security-status">
+
+                    <span class="status-dot"></span>
+
+                    <div>
+                        <strong>Gateway Secure</strong>
+                        <small>JWT Authentication</small>
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="logoutBtn"
+                    class="logout-btn"
+                    type="button"
+                >
+                    🚪 Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ========================================= -->
+        <!-- MAIN CONTENT -->
+        <!-- ========================================= -->
+
+        <main class="main-content">
+
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <h1 id="pageTitle">
+                        Network Dashboard
+                    </h1>
+
+                    <p id="pageSubtitle">
+                        Monitor your network infrastructure
+                    </p>
+
+                </div>
+
+
+                <div class="user-info">
+
+                    <div class="user-avatar">
+                        A
+                    </div>
+
+                    <div>
+
+                        <strong id="loggedUsername">
+                            Admin
+                        </strong>
+
+                        <small id="loggedRole">
+                            ADMIN
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================================= -->
+            <!-- DASHBOARD VIEW -->
+            <!-- ================================= -->
+
+            <div id="dashboardView">
+
+
+                <!-- STATISTICS -->
+
+                <section class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+                            🖥️
+                        </div>
+
+                        <div>
+                            <p>Total Devices</p>
+                            <h2 id="totalDevices">0</h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+                            ✓
+                        </div>
+
+                        <div>
+                            <p>Online Devices</p>
+                            <h2 id="onlineDevices">0</h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon red">
+                            🚨
+                        </div>
+
+                        <div>
+                            <p>Active Alarms</p>
+                            <h2 id="activeAlarms">0</h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon purple">
+                            🌐
+                        </div>
+
+                        <div>
+                            <p>Network Status</p>
+
+                            <h2 id="networkStatus">
+                                -
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DEVICES -->
+
+                <section class="content-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>Network Devices</h2>
+
+                            <p>
+                                Currently registered devices
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            id="refreshDevices"
+                            class="refresh-btn"
+                            type="button"
+                        >
+                            ↻ Refresh
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Device</th>
+                                    <th>IP Address</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="devicesTable">
+
+                                <tr>
+                                    <td colspan="4">
+                                        Loading devices...
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ALARMS -->
+
+                <section class="content-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>Recent Alarms</h2>
+
+                            <p>
+                                Network events requiring attention
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="alarmsContainer">
+
+                        <div class="loading">
+                            Loading alarms...
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- DEVICES VIEW -->
+            <!-- ================================= -->
+
+            <div
+                id="devicesView"
+                class="page-view hidden"
+            >
+
+                <section class="content-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>Network Devices</h2>
+
+                            <p>
+                                Manage registered network devices
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            id="refreshDevicesPage"
+                            class="refresh-btn"
+                            type="button"
+                        >
+                            ↻ Refresh
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Device</th>
+                                    <th>IP Address</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="devicesPageTable">
+
+                                <tr>
+
+                                    <td colspan="4">
+                                        Loading devices...
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- ALARMS VIEW -->
+            <!-- ================================= -->
+
+            <div
+                id="alarmsView"
+                class="page-view hidden"
+            >
+
+                <section class="content-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>Network Alarms</h2>
+
+                            <p>
+                                Active network events requiring attention
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            id="refreshAlarmsPage"
+                            class="refresh-btn"
+                            type="button"
+                        >
+                            ↻ Refresh
+                        </button>
+
+                    </div>
+
+
+                    <div id="alarmsPageContainer">
+
+                        <div class="loading">
+                            Loading alarms...
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- NETWORK STATUS VIEW -->
+            <!-- ================================= -->
+
+            <div
+                id="networkView"
+                class="page-view hidden"
+            >
+
+                <section class="content-card">
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h2>Network Status</h2>
+
+                            <p>
+                                Current network infrastructure status
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            id="refreshNetworkPage"
+                            class="refresh-btn"
+                            type="button"
+                        >
+                            ↻ Refresh
+                        </button>
+
+                    </div>
+
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon purple">
+                                🌐
+                            </div>
+
+                            <div>
+
+                                <p>Overall Status</p>
+
+                                <h2 id="networkPageStatus">
+                                    -
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon blue">
+                                🖥️
+                            </div>
+
+                            <div>
+
+                                <p>Connected Devices</p>
+
+                                <h2 id="networkPageDevices">
+                                    0
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon red">
+                                🚨
+                            </div>
+
+                            <div>
+
+                                <p>Active Alarms</p>
+
+                                <h2 id="networkPageAlarms">
+                                    0
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- FOOTER -->
+            <!-- ================================= -->
+
+            <footer>
+
+                <span>
+                    Secure NMS • Network Management System
+                </span>
+
+                <span>
+                    Gateway :3000 • NMS :4000
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================================= -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
